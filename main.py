@@ -29,10 +29,18 @@ if __name__ == '__main__':
         command = user_command[0]
 
         if command == 'add':
-            phone_book[user_command[1]] = int(user_command[2])
+            name = user_command[1]
+            if name not in phone_book:
+                phone_book[name] = int(user_command[2])
+            else:
+                return 'Contact already exists!'
 
         elif command == 'change':
-            phone_book[user_command[1]] = int(user_command[2])
+            name = user_command[1]
+            if name in phone_book:
+                phone_book[name] = int(user_command[2])
+            else:
+                return 'Contact does not exist!'
 
         elif command == 'phone':
             return f"{user_command[1]}'s phone is: {phone_book[user_command[1]]}"
