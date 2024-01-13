@@ -1,77 +1,100 @@
+phone_book = {}
+
+
+def input_error(func):
+    def inner(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except KeyError:
+            return ('\nThere is no contact with this name!\n')
+        except ValueError:
+            return ('\nCheck the phone number!\n')
+        except IndexError:
+            return ('\nCheck your input!\n')
+
+    return inner
+
+
+@input_error
+def add(name):
+
+    if name not in phone_book:
+        phone_book[name.title()] = int(user_command[2])
+    else:
+        return '\nContact already exists!\n'
+
+
+@input_error
+def change(name, phone):
+    if name.title() in phone_book:
+        phone_book[name.title()] = int(phone)
+    else:
+        return '\nContact does not exist!\n'
+
+
+def console_input():
+    return input('> ').lower()
+
+
+@input_error
+def phone(name):
+    return f"\n{name.title()}'s phone is: {phone_book[name.title()]}\n"
+
+
+def show_all():
+
+    result = ''
+    result += f"\n{'-' * 33}\n\n"
+
+    if not phone_book:
+        result += '{:^33}'.format('Phone book is empty!\n')
+
+    for name, phone in phone_book.items():
+        result += '|{:^15}|{:^15}|\n'.format(name, phone)
+
+    result += f"\n{'-' * 33}\n"
+
+    return result
 
 
 if __name__ == '__main__':
 
-    phone_book = {}
-
-    def input_error(func):
-        def inner(*args, **kwargs):
-            try:
-                return func(*args, **kwargs)
-            except (KeyError, ValueError, IndexError, ZeroDivisionError) as e:
-                if isinstance(e, KeyError):
-                    return ('\nThere is no contact with this name!\n')
-                if isinstance(e, ValueError):
-                    return ('\nCheck the phone number!\n')
-                if isinstance(e, IndexError):
-                    return ('Check your input!')
-
-        return inner
-
-    def console_input():
-        return input('> ').lower()
-
-    @input_error
-    def handler(user_input):
-
-        user_command = user_input.split()
-
-        command = user_command[0]
-
-        if command == 'add':
-            name = user_command[1]
-            if name not in phone_book:
-                phone_book[name] = int(user_command[2])
-            else:
-                return 'Contact already exists!'
-
-        elif command == 'change':
-            name = user_command[1]
-            if name in phone_book:
-                phone_book[name] = int(user_command[2])
-            else:
-                return 'Contact does not exist!'
-
-        elif command == 'phone':
-            return f"{user_command[1]}'s phone is: {phone_book[user_command[1]]}"
-        else:
-            return ('Check your input!')
+    print()
 
     while True:
 
         user_input = console_input()
-
         if user_input == 'hello':
-            print(f'How can I help you?')
+            print(f'\nHow can I help you?\n')
+            continue
 
         elif user_input == 'show all':
-
-            print(f"{'-' * 33}")
-
-            if not phone_book:
-                print('{:^33}'.format('Phone book is empty!'))
-
-            for name, phone in phone_book.items():
-                print('|{:^15}|{:^15}|'.format(name, phone))
-
-            print(f"{'-' * 33}")
+            result = show_all()
+            print(result)
+            continue
 
         elif user_input in ('good bye', 'close', 'exit'):
             break
 
-        else:
+        user_command = user_input.split()
+        command = user_command[0]
 
-            result = handler(user_input)
+        if command == 'add':
 
+            result = add(name=user_command[1])
             if result is not None:
-                print(f'{result}')
+                print(result)
+
+        elif command == 'change':
+
+            result = change(name=user_command[1], phone=user_command[2])
+            if result is not None:
+                
+                print(result)
+
+        elif command == 'phone':
+            result = phone(name=user_command[1])
+            print(result)
+
+        else:
+            print(('\nCheck your input!\n'))
