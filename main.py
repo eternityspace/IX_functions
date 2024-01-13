@@ -81,12 +81,11 @@ if __name__ == '__main__':
 
         user_command = user_input.split()
         command = user_command[0]
-        message = '\nCheck your input!\n'
 
         if command == 'add':
 
             if len(user_command) < 3:
-                print(message)
+                print('\nCheck your input!\n')
                 continue
 
             result = add(name=user_command[1])
@@ -96,7 +95,7 @@ if __name__ == '__main__':
         elif command == 'change':
 
             if len(user_command) < 3:
-                print(message)
+                print('\nCheck your input!\n')
                 continue
 
             result = change(name=user_command[1], phone=user_command[2])
@@ -106,11 +105,11 @@ if __name__ == '__main__':
         elif command == 'phone':
 
             if len(user_command) < 2:
-                print(message)
+                print('\nCheck your input!\n')
                 continue
 
             result = phone(name=user_command[1])
             print(result)
 
         else:
-            print(('\nCheck your input!\n'))
+            print('\nCheck your input!\n')
