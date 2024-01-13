@@ -18,7 +18,7 @@ def input_error(func):
 @input_error
 def add(name):
 
-    if name not in phone_book:
+    if name.title() not in phone_book:
         phone_book[name.title()] = int(user_command[2])
     else:
         return '\nContact already exists!\n'
@@ -43,8 +43,7 @@ def phone(name):
 
 def show_all():
 
-    result = ''
-    result += f"\n{'-' * 33}\n\n"
+    result = f"\n{'-' * 33}\n\n"
 
     if not phone_book:
         result += '{:^33}'.format('Phone book is empty!\n')
@@ -64,6 +63,10 @@ if __name__ == '__main__':
     while True:
 
         user_input = console_input()
+
+        if not user_input:
+            continue
+
         if user_input == 'hello':
             print(f'\nHow can I help you?\n')
             continue
@@ -78,8 +81,13 @@ if __name__ == '__main__':
 
         user_command = user_input.split()
         command = user_command[0]
+        message = '\nCheck your input!\n'
 
         if command == 'add':
+
+            if len(user_command) < 3:
+                print(message)
+                continue
 
             result = add(name=user_command[1])
             if result is not None:
@@ -87,12 +95,20 @@ if __name__ == '__main__':
 
         elif command == 'change':
 
+            if len(user_command) < 3:
+                print(message)
+                continue
+
             result = change(name=user_command[1], phone=user_command[2])
             if result is not None:
-                
                 print(result)
 
         elif command == 'phone':
+
+            if len(user_command) < 2:
+                print(message)
+                continue
+
             result = phone(name=user_command[1])
             print(result)
 
