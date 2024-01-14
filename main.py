@@ -6,11 +6,11 @@ def input_error(func):
         try:
             return func(*args, **kwargs)
         except KeyError:
-            return ('\nThere is no contact with this name!\n')
+            return ('\n  There is no contact with this name!\n')
         except ValueError:
-            return ('\nCheck the phone number!\n')
+            return ('\n  Check the phone number!\n')
         except IndexError:
-            return ('\nCheck your input!\n')
+            return ('\n  Check your input!\n')
 
     return inner
 
@@ -24,7 +24,7 @@ def add(user_command):
     if name.title() not in phone_book:
         phone_book[name.title()] = int(phone)
     else:
-        return '\nContact already exists!\n'
+        return '\n  Contact already exists!\n'
 
 
 @input_error
@@ -36,7 +36,7 @@ def change(user_command):
     if name.title() in phone_book:
         phone_book[name.title()] = int(phone)
     else:
-        return '\nContact does not exist!\n'
+        return '\n  Contact does not exist!\n'
 
 
 def console_input():
@@ -55,7 +55,7 @@ def main():
             continue
 
         if user_input == 'hello':
-            print(f'\nHow can I help you?\n')
+            print(f'\n  How can I help you?\n')
             continue
 
         elif user_input == 'show all':
@@ -91,27 +91,27 @@ def main():
             print(result)
 
         else:
-            print('\nCheck your input!\n')
+            print('\n  Check your input!\n')
 
 
 @input_error
 def phone(user_command):
 
     name = user_command[1]
-    return f"\n{name.title()}'s phone is: {phone_book[name.title()]}\n"
+    return f"\n  {name.title()}'s phone is: {phone_book[name.title()]}\n"
 
 
 def show_all():
 
-    result = f"\n{'-' * 33}\n\n"
+    result = f"\n  {'-' * 33}\n\n"
 
     if not phone_book:
         result += '{:^33}'.format('Phone book is empty!\n')
 
     for name, phone in phone_book.items():
-        result += '|{:^15}|{:^15}|\n'.format(name, phone)
+        result += '  |{:^15}|{:^15}|\n'.format(name, phone)
 
-    result += f"\n{'-' * 33}\n"
+    result += f"\n  {'-' * 33}\n"
 
     return result
 
