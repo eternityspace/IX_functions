@@ -16,16 +16,23 @@ def input_error(func):
 
 
 @input_error
-def add(name):
+def add(user_command):
+
+    name = user_command[1]
+    phone = user_command[2]
 
     if name.title() not in phone_book:
-        phone_book[name.title()] = int(user_command[2])
+        phone_book[name.title()] = int(phone)
     else:
         return '\nContact already exists!\n'
 
 
 @input_error
-def change(name, phone):
+def change(user_command):
+
+    name = user_command[1]
+    phone = user_command[2]
+
     if name.title() in phone_book:
         phone_book[name.title()] = int(phone)
     else:
@@ -36,27 +43,7 @@ def console_input():
     return input('> ').lower()
 
 
-@input_error
-def phone(name):
-    return f"\n{name.title()}'s phone is: {phone_book[name.title()]}\n"
-
-
-def show_all():
-
-    result = f"\n{'-' * 33}\n\n"
-
-    if not phone_book:
-        result += '{:^33}'.format('Phone book is empty!\n')
-
-    for name, phone in phone_book.items():
-        result += '|{:^15}|{:^15}|\n'.format(name, phone)
-
-    result += f"\n{'-' * 33}\n"
-
-    return result
-
-
-if __name__ == '__main__':
+def main():
 
     print()
 
@@ -80,36 +67,55 @@ if __name__ == '__main__':
             break
 
         user_command = user_input.split()
-        command = user_command[0]
+
+        if user_command != []:
+            command = user_command[0]
+        else:
+            continue
 
         if command == 'add':
 
-            if len(user_command) < 3:
-                print('\nCheck your input!\n')
-                continue
-
-            result = add(name=user_command[1])
+            result = add(user_command)
             if result is not None:
                 print(result)
 
         elif command == 'change':
 
-            if len(user_command) < 3:
-                print('\nCheck your input!\n')
-                continue
-
-            result = change(name=user_command[1], phone=user_command[2])
+            result = change(user_command)
             if result is not None:
                 print(result)
 
         elif command == 'phone':
 
-            if len(user_command) < 2:
-                print('\nCheck your input!\n')
-                continue
-
-            result = phone(name=user_command[1])
+            result = phone(user_command)
             print(result)
 
         else:
             print('\nCheck your input!\n')
+
+
+@input_error
+def phone(user_command):
+
+    name = user_command[1]
+    return f"\n{name.title()}'s phone is: {phone_book[name.title()]}\n"
+
+
+def show_all():
+
+    result = f"\n{'-' * 33}\n\n"
+
+    if not phone_book:
+        result += '{:^33}'.format('Phone book is empty!\n')
+
+    for name, phone in phone_book.items():
+        result += '|{:^15}|{:^15}|\n'.format(name, phone)
+
+    result += f"\n{'-' * 33}\n"
+
+    return result
+
+
+if __name__ == '__main__':
+
+    main()
